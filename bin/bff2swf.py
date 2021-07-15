@@ -52,6 +52,9 @@ def unzip_BFF(bff_file, tmp_folder):
 def open_UBFF(ubff_file):
 	with open(ubff_file) as file:
 		data = json.load(file)
+		if data['version'] != '1':
+			raise Exception(f"Version of UBFF file is not supported")
+			
 		print('Id:', data['id'])
 		print('BookName:', b64(data['bookname']))
 		print('PubHouse:', b64(data['pubhouse']))
