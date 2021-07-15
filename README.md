@@ -12,7 +12,7 @@
 	    --book_id=<number>
 	    --bff_file=<string>
 	    --pdf_file=<string>
-	    --paused=[true |false]
+	    --paused=[true|false]
 
 Опционально можно указать путь выходного файла параметром --pdf_file.
 
