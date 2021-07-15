@@ -54,6 +54,7 @@ def open_UBFF(ubff_file):
 		data = json.load(file)
 		print('Id:', data['id'])
 		print('BookName:', b64(data['bookname']))
+		print('PubHouse:', b64(data['pubhouse']))
 		print('Author:', b64(data['author']))
 		print('Year:', b64(data['year']))
 		print()
