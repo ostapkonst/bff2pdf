@@ -4,7 +4,7 @@
 ## Использование
 Обязательными параметрами являются: --book_id и --bff_file. Первый — идентификаторм книги. Второй — путь до .bff файла.
 
-	Usage: run_all [--book_id --bff_file --pdf_file --paused]
+	Usage: run_all --book_id --bff_file [--pdf_file] [--paused]
 	
 	Default: run_all --pdf_file=book.pdf --paused=true
 	

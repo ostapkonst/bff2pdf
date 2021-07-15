@@ -23,7 +23,7 @@ set errors=0
 set tmp_dir=tmp
 
 if "%*" == "" (
-	echo Usage: run_all [--book_id --bff_file --pdf_file --paused]
+	echo Usage: run_all --book_id --bff_file [--pdf_file] [--paused]
 	echo.
 	echo Default: run_all --pdf_file=book.pdf --paused=true
 	echo.
