@@ -6,6 +6,8 @@
 
 	Usage: run_all --book_id --bff_file [--pdf_file] [--paused]
 	
+	Example: run_all --book_id=1 --bff_file=book.bff
+	
 	Default: run_all --pdf_file=book.pdf --paused=true
 	
 	Options:
