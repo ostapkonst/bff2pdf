@@ -81,7 +81,10 @@ def decrypt_data(ubff_data):
 
 
 def save_SWF(swf_data, swf_file):
-	with open(swf_file, 'wb') as file:
+	filepath = Path(swf_file)
+	filepath.parent.mkdir(parents=True, exist_ok=True)
+
+	with open(filepath, 'wb') as file:
 		file.write(swf_data)
 		return True
 
