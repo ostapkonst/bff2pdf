@@ -38,59 +38,73 @@ def b64(encoded_str):
 
 
 def unzip_BFF(bff_file, tmp_folder):
-	with zipfile.ZipFile(bff_file, 'r') as zip_ref:
-		listOfiles = zip_ref.namelist()
-		if len(listOfiles) == 1:
-			fileName = Path(listOfiles[0])
-			if fileName.suffix == '.ubff':
-				zip_ref.extractall(tmp_folder)
-				return tmp_folder / fileName
-				
-		raise Exception(f"File {bff_file} is not valid BFF file")
+	try:
+		with zipfile.ZipFile(bff_file, 'r') as zip_ref:
+			listOfiles = zip_ref.namelist()
+			if len(listOfiles) == 1:
+				fileName = Path(listOfiles[0])
+				if fileName.suffix == '.ubff':
+					zip_ref.extractall(tmp_folder)
+					return tmp_folder / fileName
+	except:
+		pass
+
+	raise Exception(f'File "{bff_file}" is not valid BFF file')
 
 
 def open_UBFF(ubff_file):
-	with open(ubff_file) as file:
-		data = json.load(file)
-		if data['version'] != '1':
-			raise Exception(f"Version of UBFF file is not supported")
-			
-		print('Id:', data['id'])
-		print('BookName:', b64(data['bookname']))
-		print('PubHouse:', b64(data['pubhouse']))
-		print('Author:', b64(data['author']))
-		print('Year:', b64(data['year']))
-		print()
-		return data['bytearray']
+	try:
+		with open(ubff_file) as file:
+			data = json.load(file)
+			if data['version'] == '1':
+				print('Id:', data['id'])
+				print('BookName:', b64(data['bookname']))
+				print('PubHouse:', b64(data['pubhouse']))
+				print('Author:', b64(data['author']))
+				print('Year:', b64(data['year']))
+				print()
+				return data['bytearray']
+	except:
+		pass
+
+	raise Exception("Version of UBFF file is not supported")
 
 
 def decrypt_data(ubff_data):
-	result = ''
-	idx = 1
-	flag = ord(ubff_data[0])
-	
-	if (flag % 2 == 1): flag -= 1
-	
-	while (idx < flag):
-		result += ubff_data[idx + 1] + ubff_data[idx]
-		idx += 2
+	try:
+		result = ''
+		idx = 1
+		flag = ord(ubff_data[0])
 		
-	result += ubff_data[flag + 2:]
-	result = b64decode(result)
-	
-	if result[:3] != b'CWS':
-		raise Exception(f"Failed to convert UBFF bytearray to SWF format")
-	
-	return result
+		if (flag % 2 == 1): flag -= 1
+		
+		while (idx < flag):
+			result += ubff_data[idx + 1] + ubff_data[idx]
+			idx += 2
+			
+		result += ubff_data[flag + 2:]
+		result = b64decode(result)
+		
+		if result[:3] == b'CWS':
+			return result
+	except:
+		pass
+
+	raise Exception("Failed to convert UBFF bytearray to SWF format")
 
 
 def save_SWF(swf_data, swf_file):
-	filepath = Path(swf_file)
-	filepath.parent.mkdir(parents=True, exist_ok=True)
+	try:
+		filepath = Path(swf_file)
+		filepath.parent.mkdir(parents=True, exist_ok=True)
 
-	with open(filepath, 'wb') as file:
-		file.write(swf_data)
-		return True
+		with open(filepath, 'wb') as file:
+			file.write(swf_data)
+			return True
+	except:
+		pass
+		
+	raise Exception(f'Failed to save SWF "{swf_file}" file')
 
 
 if __name__ == '__main__':
