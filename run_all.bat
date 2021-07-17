@@ -24,7 +24,7 @@ set tmp_dir=tmp
 if "%*" == "" (
 	echo Usage: run_all --bff_file [--pdf_file] [--paused]
 	echo.
-	echo Default: run_all --pdf_file=<bff_file>.pdf --paused=true
+	echo Default: run_all --pdf_file=^<bff_file^>.pdf --paused=true
 	echo.
 	echo Options:
 	echo     --bff_file=^<string^>
