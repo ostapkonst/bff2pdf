@@ -130,4 +130,7 @@ if __name__ == '__main__':
 		if created:
 			print(f'SWF FILE "{ns.swf_file}" CREATED')
 		else:
-			print("FAILED TO CREATE SWF FILE")
+			if ns.swf_file is None:
+				print("SCRIPT COMPLETED")
+			else
+				print("FAILED TO CREATE SWF FILE")
