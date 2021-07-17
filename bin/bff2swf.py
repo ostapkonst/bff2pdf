@@ -132,5 +132,5 @@ if __name__ == '__main__':
 		else:
 			if ns.swf_file is None:
 				print("SCRIPT COMPLETED")
-			else
+			else:
 				print("FAILED TO CREATE SWF FILE")
