@@ -98,7 +98,7 @@ def save_SWF(swf_data, swf_file):
 		filepath = Path(swf_file)
 		filepath.parent.mkdir(parents=True, exist_ok=True)
 
-		with open(filepath, 'wb', encoding='utf-8') as file:
+		with open(filepath, 'wb') as file:
 			file.write(swf_data)
 			return True
 	except:
