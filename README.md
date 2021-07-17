@@ -2,16 +2,15 @@
 Конвертертер для формата файлов ЭБС IPRbooks. Набор скриптов конвертирует .bff файлы в формат .pdf. Конвертация происходит в несколько этапов, по этой причине её продолжительность может достигать десятков минут.
 
 ## Использование
-Обязательными параметрами являются: --book_id и --bff_file. Первый — идентификаторм книги. Второй — путь до .bff файла.
+Обязательным параметром является --bff_file. Который указывает на путь до .bff файла книги.
 
-	Usage: run_all --book_id --bff_file [--pdf_file] [--paused]
+	Usage: run_all --bff_file [--pdf_file] [--paused]
 	
-	Example: run_all --book_id=1 --bff_file=book.bff
+	Example: run_all --bff_file=book.bff --pdf_file=conv_book.pdf
 	
 	Default: run_all --pdf_file=<bff_file>.pdf --paused=true
 	
 	Options:
-	    --book_id=<number>
 	    --bff_file=<string>
 	    --pdf_file=<string>
 	    --paused=[true|false]

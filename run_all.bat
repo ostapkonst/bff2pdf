@@ -22,12 +22,11 @@ set errors=0
 set tmp_dir=tmp
 
 if "%*" == "" (
-	echo Usage: run_all --book_id --bff_file [--pdf_file] [--paused]
+	echo Usage: run_all --bff_file [--pdf_file] [--paused]
 	echo.
 	echo Default: run_all --pdf_file=<bff_file>.pdf --paused=true
 	echo.
 	echo Options:
-	echo     --book_id=^<number^>
 	echo     --bff_file=^<string^>
 	echo     --pdf_file=^<string^>
 	echo     --paused=[true^|false]
@@ -37,17 +36,11 @@ if "%*" == "" (
 )
 
 echo START ALL
-
-if "%book_id%"=="" (
-	echo.
-	echo Param --book_id must not be empty
-	set errors=1
-	goto finish
-)
+echo.
 
 if "%bff_file%"=="" (
-	echo.
 	echo Param --bff_file must not be empty
+	echo.
 	set errors=1
 	goto finish
 )
@@ -58,12 +51,24 @@ if "%pdf_file%"=="" (
 	)
 )
 
+for /f "tokens=1* delims=: " %%f in ('bin\bff2swf.py "%bff_file%" -t="%tmp_dir%"') do (
+	if "%%f"=="Id" (
+		set book_id=%%g
+	)
+)
+
+if "%book_id%"=="" (
+	echo.
+	set errors=1
+	goto finish
+)
+
 set swf_file="%tmp_dir%\%book_id%.swf"
 set png_dir="%tmp_dir%\%book_id%_png"
 set pdf_dir="%tmp_dir%\%book_id%_pdf"
 
 @echo on
-bin\bff2swf.py "%bff_file%" %swf_file% --tmp_dir="%tmp_dir%"
+bin\bff2swf.py "%bff_file%" -o=%swf_file% -t="%tmp_dir%"
 @set /a errors+=%errorlevel%
 cmd /c bin\swf2png.bat --swf_file=%swf_file% --png_dir=%png_dir%
 @set /a errors+=%errorlevel%
@@ -72,9 +77,9 @@ cmd /c bin\png2pdf.bat --png_dir=%png_dir% --pdf_dir=%pdf_dir%
 bin\join_pdf.py --pdf_dir=%pdf_dir% --pdf_file="%pdf_file%"
 @set /a errors+=%errorlevel%
 @echo off
+echo.
 
 :finish
-echo.
 if %errors%==0 (
 	echo FINISHED [OK]
 ) else (

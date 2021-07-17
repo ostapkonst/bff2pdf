@@ -28,7 +28,7 @@ from pathlib import Path
 def create_parser():
 	parser = argparse.ArgumentParser(description='Decrypt .bff file to .swf format')
 	parser.add_argument('bff_file')
-	parser.add_argument('swf_file')
+	parser.add_argument('-o', '--swf_file')
 	parser.add_argument('-t', '--tmp_dir', default='tmp')
 	return parser
 
@@ -117,8 +117,9 @@ if __name__ == '__main__':
 	try:
 		ubff_file = unzip_BFF(ns.bff_file, ns.tmp_dir)
 		ubff_data = open_UBFF(ubff_file)
-		data = decrypt_data(ubff_data)
-		created = save_SWF(data, ns.swf_file)
+		if ns.swf_file is not None:
+			data = decrypt_data(ubff_data)
+			created = save_SWF(data, ns.swf_file)
 	except KeyboardInterrupt:
 		pass
 	except Exception as e:
