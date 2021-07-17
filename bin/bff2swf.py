@@ -34,7 +34,7 @@ def create_parser():
 
 
 def b64(encoded_str):
-	return b64decode(encoded_str).decode("utf-8")
+	return b64decode(encoded_str).decode('utf-8')
 
 
 def unzip_BFF(bff_file, tmp_folder):
@@ -54,7 +54,7 @@ def unzip_BFF(bff_file, tmp_folder):
 
 def open_UBFF(ubff_file):
 	try:
-		with open(ubff_file) as file:
+		with open(ubff_file, 'r', encoding='utf-8') as file:
 			data = json.load(file)
 			if data['version'] == '1':
 				print('Id:', data['id'])
@@ -98,7 +98,7 @@ def save_SWF(swf_data, swf_file):
 		filepath = Path(swf_file)
 		filepath.parent.mkdir(parents=True, exist_ok=True)
 
-		with open(filepath, 'wb') as file:
+		with open(filepath, 'wb', encoding='utf-8') as file:
 			file.write(swf_data)
 			return True
 	except:
