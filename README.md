@@ -8,7 +8,7 @@
 	
 	Example: run_all --book_id=1 --bff_file=book.bff
 	
-	Default: run_all --pdf_file=book.pdf --paused=true
+	Default: run_all --pdf_file=<bff_file>.pdf --paused=true
 	
 	Options:
 	    --book_id=<number>

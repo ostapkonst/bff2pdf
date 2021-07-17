@@ -1,7 +1,6 @@
 @setlocal EnableExtensions
 @echo off
 
-set pdf_file=book.pdf
 set paused=true
 
 :cmd_params
@@ -25,7 +24,7 @@ set tmp_dir=tmp
 if "%*" == "" (
 	echo Usage: run_all --book_id --bff_file [--pdf_file] [--paused]
 	echo.
-	echo Default: run_all --pdf_file=book.pdf --paused=true
+	echo Default: run_all --pdf_file=<bff_file>.pdf --paused=true
 	echo.
 	echo Options:
 	echo     --book_id=^<number^>
@@ -53,6 +52,12 @@ if "%bff_file%"=="" (
 	goto finish
 )
 
+if "%pdf_file%"=="" (
+	for %%f in (%bff_file%) do (
+		set pdf_file=%%~dpnf.pdf
+	)
+)
+
 set swf_file="%tmp_dir%\%book_id%.swf"
 set png_dir="%tmp_dir%\%book_id%_png"
 set pdf_dir="%tmp_dir%\%book_id%_pdf"
@@ -64,10 +69,11 @@ cmd /c bin\swf2png.bat --swf_file=%swf_file% --png_dir=%png_dir%
 @set /a errors+=%errorlevel%
 cmd /c bin\png2pdf.bat --png_dir=%png_dir% --pdf_dir=%pdf_dir%
 @set /a errors+=%errorlevel%
-bin\join_pdf.py --pdf_dir=%pdf_dir% --pdf_file=%pdf_file%
+bin\join_pdf.py --pdf_dir=%pdf_dir% --pdf_file="%pdf_file%"
 @set /a errors+=%errorlevel%
 @echo off
 
+:finish
 echo.
 if %errors%==0 (
 	echo FINISHED [OK]
