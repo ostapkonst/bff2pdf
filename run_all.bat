@@ -2,6 +2,7 @@
 @echo off
 
 set paused=true
+set bff_file=
 
 :cmd_params
 if not %1/==/ (
