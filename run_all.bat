@@ -51,13 +51,14 @@ if "%pdf_file%"=="" (
 	)
 )
 
-for /f "tokens=1* delims=: " %%f in ('bin\bff2swf.py "%bff_file%" -t="%tmp_dir%"') do (
+for /f "tokens=1* delims=: " %%f in ('bin\bff2swf.py "%bff_file%" -t="%tmp_dir%" 2^>nul') do (
 	if "%%f"=="Id" (
 		set book_id=%%g
 	)
 )
 
-if "%errorlevel%"=="0" (
+if "%book_id%"=="" (
+	echo Failed to get book id. Apparently the format is not supported
 	echo.
 	set errors=1
 	goto finish
