@@ -71,7 +71,7 @@ for /l %%g in (1, 1, %cnt%) do (
 	if exist "%png_dir%\%%g.png" (
 		echo. [SKIPED]
 	) else (
-		%swfrender% -r 240 -p %%g "%swf_file%" -o "%png_dir%\%%g.png" >nul 2>&1
+		%swfrender% -r 300 -p %%g "%swf_file%" -o "%png_dir%\%%g.png" >nul 2>&1
 		if !errorlevel!==0 (
 			echo. [OK]
 		) else (
