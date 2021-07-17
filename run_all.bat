@@ -57,7 +57,7 @@ for /f "tokens=1* delims=: " %%f in ('bin\bff2swf.py "%bff_file%" -t="%tmp_dir%"
 	)
 )
 
-if "%book_id%"=="" (
+if "%errorlevel%"=="0" (
 	echo.
 	set errors=1
 	goto finish
