@@ -19,9 +19,6 @@ if not %1/==/ (
 	goto cmd_params
 )
 
-set errors=0
-set tmp_dir=tmp
-
 if "%*" == "" (
 	echo Usage: run_all --bff_file [--pdf_file] [--paused]
 	echo.
@@ -33,16 +30,23 @@ if "%*" == "" (
 	echo     --paused=[true^|false]
 
 	if /i not "%paused%"=="false" pause > nul
-	exit /b %errors%
+	exit /b 0
 )
 
+set tmp_dir=tmp
+set errors=1
+
 echo START ALL
-echo.
 
 if "%bff_file%"=="" (
-	echo Param --bff_file must not be empty
 	echo.
-	set errors=1
+	echo Param --bff_file must not be empty
+	goto finish
+)
+
+if not exist %bff_file% (
+	echo.
+	echo Book file is not found. Enter correct --bff_file param
 	goto finish
 )
 
@@ -59,17 +63,19 @@ for /f "tokens=1* delims=: " %%f in ('bin\bff2swf.py "%bff_file%" -t="%tmp_dir%"
 )
 
 if "%book_id%"=="" (
-	echo Failed to get book id. Apparently the format is not supported
 	echo.
-	set errors=1
+	echo Failed to get book id. Apparently the format is not supported
 	goto finish
 )
 
+set errors=0
 set swf_file="%tmp_dir%\%book_id%.swf"
 set png_dir="%tmp_dir%\%book_id%_png"
 set pdf_dir="%tmp_dir%\%book_id%_pdf"
 
+:start
 @echo on
+
 bin\bff2swf.py "%bff_file%" -o=%swf_file% -t="%tmp_dir%"
 @set /a errors+=%errorlevel%
 cmd /c bin\swf2png.bat --swf_file=%swf_file% --png_dir=%png_dir%
@@ -78,10 +84,10 @@ cmd /c bin\png2pdf.bat --png_dir=%png_dir% --pdf_dir=%pdf_dir%
 @set /a errors+=%errorlevel%
 bin\join_pdf.py --pdf_dir=%pdf_dir% --pdf_file="%pdf_file%"
 @set /a errors+=%errorlevel%
-@echo off
-echo.
 
 :finish
+@echo off
+echo.
 if %errors%==0 (
 	echo FINISHED [OK]
 ) else (

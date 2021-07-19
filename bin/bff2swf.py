@@ -6,6 +6,7 @@ import zipfile
 import json
 from base64 import b64decode
 from pathlib import Path
+from os.path import isfile
 
 '''
 {
@@ -115,6 +116,8 @@ if __name__ == '__main__':
 	print("START SCRIPT")
 	print()
 	try:
+		if not isfile(ns.bff_file):
+			raise Exception(f'Bff file "{ns.bff_file}" is not found')
 		ubff_file = unzip_BFF(ns.bff_file, ns.tmp_dir)
 		ubff_data = open_UBFF(ubff_file)
 		if ns.swf_file is not None:
